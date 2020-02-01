@@ -1,0 +1,118 @@
+#Week 1
+
+## Pragramming paridigms
+Paradigms it is concepts and patterns in scientific disciplines
+
+There are 4 padadigms:
+- imperative: coding VOnNaiman mashine, instruction-by-instructions
+control flow, mutable variables
+
+- functional
+- logic
+- object-oriented
+
+We need build high-level-abstractions like: collections, string, documents.
+
+***
+
+## What is Theory
+T consis of:
+- one or more data types
+- operations with this data types
+- laws describe relations between datatypes and operations.
+
+Normally theory does'n describe mutations.
+
+If we want implement thismathematical theories we need refuse in mutations. BEcause they break down useful lawsin theories and the theories don't admin it.
+
+We need:
+- avoid mutations
+- have powerfull tools for abstract and compose functions
+- can define theories for operators expressed as functions
+
+***
+
+## Functional programming language
+We thinks about FP int two maniers:
+- restricted stype: FP is programming w/o mutable vars, assignments, lookp, and other imperative control structures.
+- wide sense: FP mean focus on fuctions and their compositions
+
+functions in FP language is a first class citizens:
+This means fucntions:
+- can be define anywhere, include inside other functions
+- like other values they can be passed as parameters and can be returned as a results
+- as for other values there are some operators for for compose and operate under functions
+
+Therefore there are two categories of language:
+In restricted sense:
+- XSLT, XPath, XQuery
+- Haskell w/o IO, monads etc
+
+In the wider sense:
+- Lisp, Scheme, Clojure, Ocams, F#
+- Haskell (full language), Scala, Smalltack
+
+***
+
+## Evaluation, the substitution model
+THe scheme how expression evaluated named 'substitution model'.
+May think about it that all evaluation reduces all expression to a value.
+It can be applied to all expression as long they *have no side effects*.
+
+In formal substitution model named labda-calculus. It is fundations of FP.
+The aim of FP is have no side effect is simplify of evaluation.
+ 
+## Termination problem
+Does every expression can reduce to value (can terminate in finite umber of steps)?
+No. For example imfinite loop:
+    def loop: Int = loop
+
+## Evaluation strategies: call-by-name and call-by-value
+THe both strategies reduce to the same final state, because:
+- reduced expressions it pure fuctions and
+- the both evaluations finitions. Have terminate
+
+call-by-value: pros: 
+- all fuctions arguments evaluate only once
+
+call-by-name: pros:
+- the function argument isn't evaluated if it unused in function body.
+
+Call-by-value (CBV)  using in Scala by default: firstly reduce parameters than evaluate body of functions. CBN - firstly we step into max deep and than try evaluate expressions. 
+But if function parameter start with => they evaluated CBN.
+
+THeorem: if CBV evalueation is terminated then CBN evaluation is terminated too.But not in elsewhere.
+
+## Conditional expressions
+if-else
+
+It look like in Java but it is not statements. *It is expressions*.
+def abs(x: Int) = if (x >= 0) x else -x
+
+x >= 0 is *predicate* of BOol type.
+
+Expresstions may be *short-circut evaluation*
+ex: true && e --> true
+
+"def form" - definitions is definition CBN because right side of definitions evaluate every use. For ex. functions evaluated in every use.
+VS
+this form "val"-definiitons evaluate only once. Therefore it is CNV.
+
+## Blocks and lexical scope
+The last element in expression can defines its value
+
+## Tail recursion
+If function call utself in end of function it is *tail recursion*. Plus tail recursion is that it can store in constant stack space (reuse stack space). It property do posibility use TR for evaluate of interation algorithgms. 
+
+In general, if the last action of a function consists of calling a
+function (which may be the same), one stack frame would be
+sufficient for both functions.
+TR is loop in FP and have the same perfomance as traditional iterative-loops
+
+
+
+
+
+
+
+ 
