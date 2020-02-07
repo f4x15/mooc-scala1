@@ -8,6 +8,9 @@ class RecFunSuite {
 
   // ------ balance tests -----------------------------------------------------
 
+  @Test def `balance: test`: Unit =
+    assert(balance("(/)".toList))
+
   @Test def `balance: '(if (zero? x) max (/ 1 x))' is balanced`: Unit =
     assert(balance("(if (zero? x) max (/ 1 x))".toList))
 
@@ -15,7 +18,7 @@ class RecFunSuite {
     assert(balance("I told him (that it's not (yet) done).\n(But he wasn't listening)".toList))
 
   @Test def `balance: ':-)' is unbalanced`: Unit =
-    assert(!balance(":-)".toList))
+    assert(!balance(")".toList))
 
   @Test def `balance: counting is not enough`: Unit =
     assert(!balance("())(".toList))
