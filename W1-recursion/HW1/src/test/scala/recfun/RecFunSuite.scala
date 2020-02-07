@@ -25,6 +25,18 @@ class RecFunSuite {
 
   // ------ countChange tests -------------------------------------------------
 
+  @Test def `simple count change, no coins`: Unit =
+    assertEquals(0, countChange(2, List()))
+
+  @Test def `simple count change, 1 penny, 2 money`: Unit =
+    assertEquals(1, countChange(2, List(1)))
+
+  @Test def `simple count change, 1 penny, 3 money`: Unit =
+    assertEquals(1, countChange(3, List(1)))
+
+  @Test def `simple count change, 1,2 penny, money 2`: Unit =
+    assertEquals(2, countChange(2, List(1, 2)))
+
   @Test def `countChange: example given in instructions`: Unit =
     assertEquals(3, countChange(4,List(1,2)))
 
