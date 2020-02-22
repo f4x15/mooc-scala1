@@ -1,0 +1,39 @@
+# Week 2: Hirh order functions (HOF)
+
+Functional languages have functions as *first class values*.
+It means that like any other value fucntions can passed as parameter in a function or enter from it.
+
+Functions that take other functions as parameters called *high order fucntions*.
+
+fucntions w/o name - anonymous function:
+
+x => x * x * x   "=>" function type. Using for anonymous functions.
+(a: Int) => Body
+
+## Currying
+sum(cube)(1, 10) == (sum (cube)) (1, 10):
+Firstly we return function that return other function:
+sum(cube) first function and than 
+
+List nested of abonymous functions is called Curryng,
+We can def:
+f(x1, x2, ... xn) = E into  f(x1) => x2 => ... => xn => E
+
+## Preconditions VS assertations:
+*assert* means that program has reached an inconsistente state. It is problem current function/method/code
+*require* means that caller of the method is fault and should fix its call.
+
+## Operators, infix notation
+###Arity-0 - it is method w/o arguments:
+```
+reply()
+reple
+```
+Should use this syntax for methods w/o side-effects (purely-functionality).
+
+### Infix notation:
+`x max y`   else   `x.max(y)`
+
+Use infix operators for single parameter functions. Drop use it for multi-parameter!!!
+
+
