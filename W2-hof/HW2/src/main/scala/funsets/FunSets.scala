@@ -56,11 +56,14 @@ trait FunSets extends FunSetsInterface {
    * if intersect => false, else s(x)
    */
   def diff(s: FunSet, t: FunSet): FunSet = x => {
-     if (s(x) && t(x)) false else s(x)
+    !(s(x) && t(x)) && s(x)
   }
 
   /**
    * Returns the subset of `s` for which `p` holds.
+   *
+   * Create filter characteristic function: firstly check predicate,
+   *  than check set contains
    */
   def filter(s: FunSet, p: Int => Boolean): FunSet =
     x => p(x) && s(x)
