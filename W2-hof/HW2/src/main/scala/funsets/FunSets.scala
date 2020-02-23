@@ -12,13 +12,25 @@ trait FunSets extends FunSetsInterface {
 
   /**
    * Indicates whether a set contains a given element.
+   *
+   * This is call partial-defined FunSet function
    */
   def contains(s: FunSet, elem: Int): Boolean = s(elem)
 
   /**
    * Returns the set of the one given element.
-   */
-  def singletonSet(elem: Int): FunSet = ???
+   *
+   * FunSet is `predicate-function`, that determinate element in set or not.
+   * For set 1..100 elements we create predicate functions like this:
+   *  def setPred(elem: Int) = if (elem >= 1 && elem <= 100) true else false
+   *
+   * Internals: This set realisation can store single element only
+   *  x - test parameter, elem - stored element in set
+   *
+   * It is partial-defined function. Firstly it store elem only than that
+   * call this function we set x-parameter and call the function in `contains`
+   */                                 // x - parameter, elem - stored elem in set
+  def singletonSet(elem: Int): FunSet = x => x == elem
 
 
   /**

@@ -44,10 +44,11 @@ class FunSetSuite {
    * This test is currently disabled (by using @Ignore) because the method
    * "singletonSet" is not yet implemented and the test would fail.
    *
-   * Once you finish your implementation of "singletonSet", remvoe the
+   * Once you finish your implementation of "singletonSet", remove the
    * @Ignore annotation.
+   *        @Ignore("not ready yet")
    */
-  @Ignore("not ready yet") @Test def `singleton set one contains one`: Unit = {
+   @Test def `singleton set one contains one`: Unit = {
 
     /**
      * We create a new instance of the "TestSets" trait, this gives us access
@@ -57,6 +58,8 @@ class FunSetSuite {
       /**
        * The string argument of "assert" is a message that is printed in case
        * the test fails. This helps identifying which assertion failed.
+       *
+       * If singleton set was successful that set contain this element
        */
       assert(contains(s1, 1), "Singleton")
     }
@@ -73,5 +76,5 @@ class FunSetSuite {
 
 
 
-  @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
+ // @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
 }

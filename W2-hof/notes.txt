@@ -36,4 +36,8 @@ Should use this syntax for methods w/o side-effects (purely-functionality).
 
 Use infix operators for single parameter functions. Drop use it for multi-parameter!!!
 
+***
 
+Trait is like abstract class: interface that can store a implementation.
+Traits are used to share interfaces and fields between classes. They are similar to Java 8’s interfaces.
+Java 8 interface changes include static methods and default methods in interfaces. Prior to Java 8, we could have only method declarations in the interfaces. But from Java 8, we can have default methods and static methods in the interfaces.
