@@ -86,6 +86,17 @@ class FunSetSuite {
     }
   }
 
+  @Test def `diff contain elements from one set w/o intersect`: Unit = {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      val s23 = union(s2, s3)
+
+      val s = diff(s123, s23)
+      assert(contains(s, 1), "Union 1")
+      assert(!contains(s, 2), "Union 2")
+      assert(!contains(s, 3), "Union 3")
+    }
+  }
 
  // @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
 }

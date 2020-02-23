@@ -52,8 +52,12 @@ trait FunSets extends FunSetsInterface {
   /**
    * Returns the difference of the two given sets,
    * the set of all elements of `s` that are not in `t`.
+   *
+   * if intersect => false, else s(x)
    */
-  def diff(s: FunSet, t: FunSet): FunSet = ???
+  def diff(s: FunSet, t: FunSet): FunSet = x => {
+    if (s(x) && t(x)) false else s(x)
+  }
 
   /**
    * Returns the subset of `s` for which `p` holds.
