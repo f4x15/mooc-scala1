@@ -109,5 +109,23 @@ class FunSetSuite {
     }
   }
 
+  @Test def `forall check if predicate hold for all set`: Unit = {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      assert(forall(s123, x => x > 0), ">0")
+      assert(!forall(s123, x => x > 2), ">2")
+    }
+  }
+
+  @Test def `exists check if predicate hold for one and more in set`: Unit = {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+
+      assert(exists(s123, x => x > 0), "x>0 valid for all")
+      assert(exists(s123, x => x > 1), "x>1 valid for {2, 3}")
+      assert(!exists(s123, x => x > 4), "x>4 valid for {none}}")
+    }
+  }
+
  // @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
 }

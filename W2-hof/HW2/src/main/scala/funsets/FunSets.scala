@@ -75,21 +75,30 @@ trait FunSets extends FunSetsInterface {
 
   /**
    * Returns whether all bounded integers within `s` satisfy `p`.
+   *
+   * For `forall`` need store state when we iterate throw all set elements.
+   *  For search all element in set we iterate throw bound+-
    */
   def forall(s: FunSet, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
-      if (???) ???
-      else if (???) ???
-      else iter(???)
+      if (a > bound) true
+      else if (contains(s, a) && !p(a)) false
+      else iter(a + 1)
     }
-    iter(???)
+    iter(-bound)
   }
 
   /**
    * Returns whether there exists a bounded integer within `s`
    * that satisfies `p`.
+   *
+   * forall and exists are like quantifiers in math sense
+   * exists(x),f(x)==true; <=> !(forall(x),f(x)=false)
+   * see: https://www.coursera.org/learn/progfun1/discussions/weeks/2/threads/K2f0MLHpEem9FQp29_7a-A/replies/Jx-QBBoTEeeskRI8P5CzrA
+   *
    */
-  def exists(s: FunSet, p: Int => Boolean): Boolean = ???
+  def exists(s: FunSet, p: Int => Boolean): Boolean =
+    !(forall(s, x => p(x) == false))
 
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
