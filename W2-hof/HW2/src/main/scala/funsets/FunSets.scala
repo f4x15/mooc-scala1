@@ -82,7 +82,8 @@ trait FunSets extends FunSetsInterface {
   def forall(s: FunSet, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
       if (a > bound) true
-      else if (contains(s, a) && !p(a)) false
+      else if (contains(s, a) &&
+        !p(a)) false
       else iter(a + 1)
     }
     iter(-bound)
@@ -102,8 +103,14 @@ trait FunSets extends FunSetsInterface {
 
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
+   *
+   * If we create FunSet that we create characteristic function on
+   *  input with we put all values from -bound..+bound
+   * In complex tree-calls we rename variables for avoid escaping a variable
    */
-  def map(s: FunSet, f: Int => Int): FunSet = ???
+  def map(s: FunSet, f: Int => Int): FunSet = x => {
+    exists(s, y => f(y) == x)
+  }
 
   /**
    * Displays the contents of a set

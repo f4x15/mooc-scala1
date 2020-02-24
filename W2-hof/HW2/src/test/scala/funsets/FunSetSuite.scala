@@ -127,5 +127,15 @@ class FunSetSuite {
     }
   }
 
- // @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
+  @Test def `map create new map transformed by f`: Unit = {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+
+      assert(contains(map(s123, x => x), 3), "x=>x test")
+      assert(contains(map(s123, x => x*2), 6), "x=>x*2 test")
+    }
+  }
+
+  // need comment it for debugging purpose
+  @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
 }
