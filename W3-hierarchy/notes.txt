@@ -1,0 +1,124 @@
+# Hierarchy
+
+## Set 
+Set can be implemented various type of path with various trade-offs, for example:
+1. C++ build in Binary Search Tree (for example red-black tree). C++11 have unordered_set builded on hash table. 
+2. Java implement *Set* interface by:
+- hash set 
+- *sorted set* based on BST
+3. Haskell - BST
+4. Net framework: hashset and sortedset
+
+## Persistent data structures: PDS
+PDS we have new and old version of data structure. Used for scaling function programming up to collections and like.
+
+When we change PSD we create new version of this structure. All version always exist. 
+
+Exist two class of persistency:
+- partial: we can change only last state/version of data structure
+- full: wehave tree of version of data structure
+- confluent - partial persistence data structure
+- functional / imutability - very strong variant of persistency
+
+Execution models:
+- RAM-mashine is calssicall execution nodel
+- pointer mashine: 
+
+In functionnal model we can: read and creane new instances. We have immutable root pointer. What you create in memory that it is not mutable what was created earlier. They persistent in anyone case. THey work based on save pointer on version. 
+
+Functional stack:
+push (S, a) => S`
+pop (S) => (S`, a) return new version of stack S`
+
+*Persistence can possibility auto-scalling, for write*.
+
+## task for persistence: IDeally for example:
+Full ismore compicated for realisation.
+
+## Polimorphism
+A fundomental data structure in many FP lang is immutable linked list.
+It contain from:
+ - Nil - the empty list
+ - Cons - a cell containing element and pointer  of the list
+
+```
+class Cons(val head: Int, val tail: IntList)
+
+val here is:
+- method parameter
+- field class value
+```
+
+We can generize the defenition by type parameter:
+```
+trait List[T]
+class Cons[T](val head: T, val tail: List[T]) extends List[T]
+class Nil[T] extends List[T]
+```
+
+## Val VS def inicialisers:
+val evaluation when definition, def evalueted constantly when touch it.
+
+## Generic fucntion
+As calasses functions also can be generic (can be have type parameters).
+
+## Polymorphism
+Polymorphism (P) means that a function type comes `in many forms`:
+- the function can accept arguments of many types
+- the type can be intanced of many types
+
+THere are two principal form of polymorphism:
+- subtyping: instances of sub-classes can be passed to a base class (eg: base type List and its subtypes: Nil and Cons). 
+- generics: instances of function or classes can be parametrizations
+
+**Subtyping** it traditional P of OOP-languages
+**Generics** of P most often used in Functional-progamming world.
+
+## Class hierarchies
+Abstract class can be:
+- not for instance
+- can have field and value
+- but can't have a .ctors
+
+## Persistance data structures (PDS)
+Pds is cornerstone for scalling functional programming up to collections.
+
+## Top Types in herarhy
+Any - the base type of all types
+Contaion: ==, != equals, hashCode, toString
+
+AnyRef - THe base type of all reference types
+Alias of java.langObject. Every user-type is a subtype of AnyRef.AnyRef is alias to java.lang.Object.  
+
+AnyVal - the base calss for all primitive types
+
+Great Links about Nothning:
+http://oldfashionedsoftware.com/2008/08/20/a-post-about-nothing/
+
+## Nothing, Null, Unit, Nil, Unit 
+Based on good article: http://oldfashionedsoftware.com/2008/08/20/a-post-about-nothing/
+
+## Nothing
+Nothing - is as bottom of the Scala's type hierarchy. It is subtype of every type (include scala.Null). THere is no instance of this type. Nothing is a subtype of all types, also called the bottom type.  
+
+THere are two use-cases of this class:
+- use as empty cpllection: List[Nothing], Set[Nothing]
+- return type from methods that never return normally. For example `new Throw`. Higher kinded type like Option and List MAY contain A values in i. But they in Nil or None in Scala. Infinity loop, program exit, 
+
+## Null
+Null is a trait (like abstract class in Java). There is exactly one intance of `Null` is `null`. The same purpose as Java: It is value of the reference that is no refering to any object.  
+Null is subtype of all reference type - AnyRef. 
+
+## Unit
+Unit is subtype of AnyVal. There is only one value of type Unit. A method that return `Unit` is analogue `void` return type in Java.
+
+## None
+Nothing represente non-existing values.
+`case object None extends Option[Nothing] {`
+
+## Nil
+Nil extend of List[Nothing]. It is empty list.
+'case object Nil extends List[Nothing] {'
+
+## Polymorphism
+
