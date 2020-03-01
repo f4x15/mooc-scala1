@@ -82,7 +82,7 @@ object Main {
     //assert(nth(-1, l) == 7, "out bound")
 
     println (nth2(2, l))
-    println (nth2(3, l))
+    //println (nth2(3, l))
    // println (nth2(-1, l))
 
   }

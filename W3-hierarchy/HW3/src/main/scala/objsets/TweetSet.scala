@@ -41,7 +41,7 @@ abstract class TweetSet extends TweetSetInterface {
    * Question: Can we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def filter(p: Tweet => Boolean): TweetSet = ???
+  def filter(p: Tweet => Boolean): TweetSet
 
   /**
    * This is a helper method for `filter` that propagetes the accumulated tweets.
@@ -107,7 +107,12 @@ abstract class TweetSet extends TweetSetInterface {
 }
 
 class Empty extends TweetSet {
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
+
+  def filter(p: Tweet => Boolean): TweetSet = this
+
+  // acc is accumulator. It is boundary condition.
+  // Simple pass acc next
+  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
 
   /**
    * The following methods are already implemented
@@ -120,12 +125,32 @@ class Empty extends TweetSet {
   def remove(tweet: Tweet): TweetSet = this
 
   def foreach(f: Tweet => Unit): Unit = ()
+
+  override def toString: String = "."
 }
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
-  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
+  /**
+   * This method takes a predicate and returns a subset of all the elements
+   * in the original set for which the predicate is true.
+   */
+  override def filter(p: Tweet => Boolean): TweetSet = filterAcc(p, new Empty)
 
+  /**
+   * Return new subset of tree where `p` predicate is true.
+   * Iterate over all tree and check `p`. Broadcast result through `recursion`.
+   *
+   * @param p - predicate
+   * @param acc - accumulate of result
+   * @return new `TweetSet` subtree where predicate is true
+   */
+  def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = {
+      left.filterAcc(p, right.filterAcc(            // iterate over all subtrees
+        p, if (p(elem)) acc.incl(elem) else acc)    // check if need inc curr element,
+                                                    // if no need simple pass acc to next
+      )
+  }
 
   /**
    * The following methods are already implemented
@@ -152,6 +177,8 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     left.foreach(f)
     right.foreach(f)
   }
+
+  override def toString: String = "{" + left + elem + right + "}"
 }
 
 trait TweetList {
@@ -191,6 +218,23 @@ object GoogleVsApple {
 }
 
 object Main extends App {
+
+  trait TestSets {
+    val set1 = new Empty
+    val set2 = set1.incl(new Tweet("a", "a body", 20))
+    val set3 = set2.incl(new Tweet("b", "b body", 20))
+    val c = new Tweet("c", "c body", 7)
+    val d = new Tweet("d", "d body", 9)
+    val set4c = set3.incl(c)
+    val set4d = set3.incl(d)
+    val set5 = set4c.incl(d)
+  }
+
+  new TestSets {
+    println(set5.filterAcc(tweet => tweet.retweets > 8, new Empty))
+
+  }
+
   // Print the trending tweets
-  GoogleVsApple.trending foreach println
+  //GoogleVsApple.trending foreach println
 }

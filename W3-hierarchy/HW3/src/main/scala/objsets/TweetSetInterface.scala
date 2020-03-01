@@ -12,4 +12,5 @@ trait TweetSetInterface {
   def union(that: TweetSet): TweetSet
   def mostRetweeted: Tweet
   def descendingByRetweet: TweetList
+  override def toString: String = super.toString
 }

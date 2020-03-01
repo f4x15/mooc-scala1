@@ -3,7 +3,6 @@
  * We can missing an implementation
  * And Can't create instance this class by `new``
  **/
-/* // uncomment me!!!
 abstract class IntSet {
   // add/include element `x` to Set
   def incl(x: Int): IntSet
@@ -18,10 +17,17 @@ class NonEmpty(elem: Int, left: IntSet, right: IntSet) extends IntSet {
     else if (x > elem) right contains x
     else true
 
-  def incl(x: Int): IntSet =
-    if (x < elem) new NonEmpty(elem, left incl x, right)
-    else if (x > elem) new NonEmpty(elem, left, right incl x)
-    else this
+  def incl(x: Int): IntSet = {
+    var t: IntSet = null
+    //                  create copy subtree with current element
+    //  left incl x, - create new subtree
+    //  create copy of current elements: new NonEmpty(elem, ..., right)
+    if (x < elem) t = new NonEmpty(elem, left incl x, right)
+    else if (x > elem) t = new NonEmpty(elem, left, right incl x)
+    else t = this
+
+    t
+  }
 
   override def toString = "{" + left + elem + right + "}"
 
@@ -43,27 +49,14 @@ class Empty extends IntSet {
   def union(other: IntSet): IntSet = other
 }
 
-val t = new NonEmpty(7, new Empty, new Empty)
-val t1 = t incl 5 incl 12 incl 9 incl 13
+object Main {
 
-val t2 = t1 incl 3
+  def main(args: Array[String]): Unit = {
+    val t = new NonEmpty(7, new Empty, new Empty)
+    val t1 = t incl 5 incl 12 incl 9 incl 13
 
-
-/*
-val t2 = t incl 4 incl 7
-t1 union t2
-*/
-val test: Int = 1
-
-// Trait like Java Interfaces with
-//  field implementation ability
-trait Planar[T] {
-  def height: Int
-  def width: Int
-  def trait List[T]
-  class Cons[T](val head: T, val tail: List[T]) extends List[T]
-  class Nil[T] extends List[T] = height * width
+    val t2 = t1 incl 3
+    println(t1)
+    println(t2)
+  }
 }
-*/
-// usening
-// class Square extends Shape with Planar with Movable ???
