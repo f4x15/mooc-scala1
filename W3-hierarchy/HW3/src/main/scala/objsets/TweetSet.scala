@@ -54,7 +54,7 @@ abstract class TweetSet extends TweetSetInterface {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def union(that: TweetSet): TweetSet = ???
+  def union(that: TweetSet): TweetSet
 
   /**
    * Returns the tweet from this set which has the greatest retweet count.
@@ -115,6 +115,13 @@ class Empty extends TweetSet {
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
 
   /**
+   * Returns a new `TweetSet` that is the union of `TweetSet`s `this` and `that`.
+   *
+   * Base case
+   */
+  def union(that: TweetSet): TweetSet = that
+
+  /**
    * The following methods are already implemented
    */
 
@@ -151,6 +158,22 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
                                                     // if no need simple pass acc to next
       )
   }
+
+  /**
+   * Returns a new `TweetSet` that is the union of `TweetSet`s `this` and `that`.
+   *
+   * It is `the fastest` implementation
+   * It is more effective because deep of recursion is less
+   * [https://www.coursera.org/learn/progfun1/discussions/weeks/3/threads/KysSP7HpEem9FQp29_7a-A/replies/NLofwbHpEemMUQoC5G__rA[]
+   * VS when we go throw left/right we go into recursion deeper and deeper...
+   *
+   * There are more O-complex solutions:
+   *  left union right union that incl elem
+   *  ((left union right) union that) incl elem
+   *  etc...
+   */
+  def union(that: TweetSet): TweetSet =
+    (left union (right union (that incl elem)))
 
   /**
    * The following methods are already implemented
@@ -228,11 +251,45 @@ object Main extends App {
     val set4c = set3.incl(c)
     val set4d = set3.incl(d)
     val set5 = set4c.incl(d)
+
+    val set6 = set5.incl(new Tweet("e", "e body", 20))
+    val set7 = set6.incl(new Tweet("f", "f body", 20))
+    val set8 = set7.incl(new Tweet("g", "g body", 20))
+    val set9 = set8.incl(new Tweet("h", "h body", 20))
+    val set10 = set9.incl(new Tweet("i", "i body", 20))
+    val set11 = set10.incl(new Tweet("j", "j body", 20))
+    val set12 = set11.incl(new Tweet("k", "a body", 20))
+    val set13 = set12.incl(new Tweet("l", "l body", 20))
+    val set14 = set13.incl(new Tweet("n", "n body", 20))
+    val set15 = set14.incl(new Tweet("o", "o body", 20))
+    val set16 = set15.incl(new Tweet("p", "p body", 20))
+    val set17 = set16.incl(new Tweet("r", "r body", 20))
+    val set18 = set17.incl(new Tweet("s", "s body", 20))
+    val set19 = set18.incl(new Tweet("t", "t body", 20))
+    val set20 = set19.incl(new Tweet("u", "u body", 20))
+    val set21 = set20.incl(new Tweet("x", "x body", 20))
+    val set22 = set21.incl(new Tweet("w", "w body", 20))
+    val set23 = set22.incl(new Tweet("z", "z body", 20))
+    val set24 = set23.incl(new Tweet("m", "m body", 20))
   }
 
   new TestSets {
-    println(set5.filterAcc(tweet => tweet.retweets > 8, new Empty))
+    // println(set5.filterAcc(tweet => tweet.retweets > 8, new Empty))
 
+    val bigSet1 = set5 union set6 union set7 union set8 union set9 union set10 union
+      set11 union set12 union set13 union set14 union set15 union set16 union set17 union
+      set18 union set19 union set20 union set21 union set22 union set23 union set24
+
+    val bigSet2 = set5 union set6 union set7 union set8 union set9 union set10 union
+      set11 union set12 union set13 union set14 union set15 union set16 union set17 union
+      set18 union set19 union set20 union set21 union set22 union set23 union set24
+
+    val t0 = System.nanoTime()
+    val result = bigSet1 union bigSet2
+    val t1 = System.nanoTime()
+    val elapsed = t1 - t0
+
+    println(s"elapsed: $elapsed ns")
   }
 
   // Print the trending tweets
