@@ -2,13 +2,15 @@ package objsets
 
 import TweetReader._
 
+import scala.runtime.Nothing$
+
 /**
  * A class to represent tweets.
  */
 class Tweet(val user: String, val text: String, val retweets: Int) {
   override def toString: String =
     "User: " + user + "\n" +
-    "Text: " + text + " [" + retweets + "]"
+      "Text: " + text + " [" + retweets + "]"
 }
 
 /**
@@ -33,13 +35,9 @@ class Tweet(val user: String, val text: String, val retweets: Int) {
  * [1] http://en.wikipedia.org/wiki/Binary_search_tree
  */
 abstract class TweetSet extends TweetSetInterface {
-
   /**
    * This method takes a predicate and returns a subset of all the elements
    * in the original set for which the predicate is true.
-   *
-   * Question: Can we implment this method here, or should it remain abstract
-   * and be implemented in the subclasses?
    */
   def filter(p: Tweet => Boolean): TweetSet
 
@@ -50,9 +48,6 @@ abstract class TweetSet extends TweetSetInterface {
 
   /**
    * Returns a new `TweetSet` that is the union of `TweetSet`s `this` and `that`.
-   *
-   * Question: Should we implment this method here, or should it remain abstract
-   * and be implemented in the subclasses?
    */
   def union(that: TweetSet): TweetSet
 
@@ -61,11 +56,13 @@ abstract class TweetSet extends TweetSetInterface {
    *
    * Calling `mostRetweeted` on an empty set should throw an exception of
    * type `java.util.NoSuchElementException`.
-   *
-   * Question: Should we implment this method here, or should it remain abstract
-   * and be implemented in the subclasses?
    */
-  def mostRetweeted: Tweet = ???
+  def mostRetweeted: Tweet
+
+  /**
+   * Helper method for `mostRetweeted`
+   */
+  def mostRetweetedAcc(elem: Tweet): Tweet
 
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
@@ -122,6 +119,19 @@ class Empty extends TweetSet {
   def union(that: TweetSet): TweetSet = that
 
   /**
+   * Returns the tweet from this set which has the greatest retweet count.
+   *
+   * Calling `mostRetweeted` on an empty set should throw an exception of
+   * type `java.util.NoSuchElementException`.
+   */
+  def mostRetweeted: Tweet = throw new NoSuchElementException("Empty set")
+
+  /**
+   * Helper method for `mostRetweeted`
+   */
+  def mostRetweetedAcc(elem: Tweet): Tweet = elem
+
+  /**
    * The following methods are already implemented
    */
 
@@ -148,15 +158,15 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
    * Return new subset of tree where `p` predicate is true.
    * Iterate over all tree and check `p`. Broadcast result through `recursion`.
    *
-   * @param p - predicate
+   * @param p   - predicate
    * @param acc - accumulate of result
    * @return new `TweetSet` subtree where predicate is true
    */
   def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = {
-      left.filterAcc(p, right.filterAcc(            // iterate over all subtrees
-        p, if (p(elem)) acc.incl(elem) else acc)    // check if need inc curr element,
-                                                    // if no need simple pass acc to next
-      )
+    left.filterAcc(p, right.filterAcc( // iterate over all subtrees
+      p, if (p(elem)) acc.incl(elem) else acc) // check if need inc curr element,
+      // if no need simple pass acc to next
+    )
   }
 
   /**
@@ -168,12 +178,30 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
    * VS when we go throw left/right we go into recursion deeper and deeper...
    *
    * There are more O-complex solutions:
-   *  left union right union that incl elem
-   *  ((left union right) union that) incl elem
+   * left union right union that incl elem
+   * ((left union right) union that) incl elem
    *  etc...
    */
   def union(that: TweetSet): TweetSet =
     (left union (right union (that incl elem)))
+
+  /**
+   * Returns the tweet from this set which has the greatest retweet count.
+   *
+   * Calling `mostRetweeted` on an empty set should throw an exception of
+   * type `java.util.NoSuchElementException`.
+   */
+  def mostRetweeted: Tweet = {
+    mostRetweetedAcc(this.elem)
+  }
+
+  /**
+   * Helper method for `mostRetweeted`
+   */
+  def mostRetweetedAcc(max: Tweet): Tweet = {
+    left.mostRetweetedAcc(right.mostRetweetedAcc(
+      if (elem.retweets > max.retweets) elem else max))
+  }
 
   /**
    * The following methods are already implemented
@@ -206,8 +234,11 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
 trait TweetList {
   def head: Tweet
+
   def tail: TweetList
+
   def isEmpty: Boolean
+
   def foreach(f: Tweet => Unit): Unit =
     if (!isEmpty) {
       f(head)
@@ -217,7 +248,9 @@ trait TweetList {
 
 object Nil extends TweetList {
   def head = throw new java.util.NoSuchElementException("head of EmptyList")
+
   def tail = throw new java.util.NoSuchElementException("tail of EmptyList")
+
   def isEmpty = true
 }
 
@@ -245,7 +278,7 @@ object Main extends App {
   trait TestSets {
     val set1 = new Empty
     val set2 = set1.incl(new Tweet("a", "a body", 20))
-    val set3 = set2.incl(new Tweet("b", "b body", 20))
+    val set3 = set2.incl(new Tweet("b", "b body", 21))
     val c = new Tweet("c", "c body", 7)
     val d = new Tweet("d", "d body", 9)
     val set4c = set3.incl(c)
@@ -260,7 +293,7 @@ object Main extends App {
     val set11 = set10.incl(new Tweet("j", "j body", 20))
     val set12 = set11.incl(new Tweet("k", "a body", 20))
     val set13 = set12.incl(new Tweet("l", "l body", 20))
-    val set14 = set13.incl(new Tweet("n", "n body", 20))
+    val set14 = set13.incl(new Tweet("n", "n body", 24))
     val set15 = set14.incl(new Tweet("o", "o body", 20))
     val set16 = set15.incl(new Tweet("p", "p body", 20))
     val set17 = set16.incl(new Tweet("r", "r body", 20))
@@ -271,10 +304,6 @@ object Main extends App {
     val set22 = set21.incl(new Tweet("w", "w body", 20))
     val set23 = set22.incl(new Tweet("z", "z body", 20))
     val set24 = set23.incl(new Tweet("m", "m body", 20))
-  }
-
-  new TestSets {
-    // println(set5.filterAcc(tweet => tweet.retweets > 8, new Empty))
 
     val bigSet1 = set5 union set6 union set7 union set8 union set9 union set10 union
       set11 union set12 union set13 union set14 union set15 union set16 union set17 union
@@ -283,13 +312,23 @@ object Main extends App {
     val bigSet2 = set5 union set6 union set7 union set8 union set9 union set10 union
       set11 union set12 union set13 union set14 union set15 union set16 union set17 union
       set18 union set19 union set20 union set21 union set22 union set23 union set24
+  }
 
+  /*  // union logic
+  new TestSets {
     val t0 = System.nanoTime()
     val result = bigSet1 union bigSet2
     val t1 = System.nanoTime()
     val elapsed = t1 - t0
 
     println(s"elapsed: $elapsed ns")
+  }
+  */
+
+  // mostRetweeted logic
+  new TestSets {
+    println(set24.mostRetweeted)
+
   }
 
   // Print the trending tweets

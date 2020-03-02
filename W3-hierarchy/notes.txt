@@ -120,5 +120,13 @@ Nothing represente non-existing values.
 Nil extend of List[Nothing]. It is empty list.
 'case object Nil extends List[Nothing] {'
 
-## Polymorphism
+## Functional Programming Patterns
+There are two functional patterns recursions:
+- *iter(acc)* internal iter method with some accumulator
+- *chain of calls* - multiple chain of functions calls left.filter(right.filter(....))
+- *chain of calls with acc* - chain of calls with some-one returned value. It value is returned type, passed throw all functions.
+
+iter() - pattern can be appy if we know obvious step of iterate. 
+chain-of-calls we use if we need some operations with all vulues `cartesian product` of sets/list etc.
+
 
