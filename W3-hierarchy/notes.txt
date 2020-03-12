@@ -129,4 +129,6 @@ There are two functional patterns recursions:
 iter() - pattern can be appy if we know obvious step of iterate. 
 chain-of-calls we use if we need some operations with all vulues `cartesian product` of sets/list etc.
 
+What we need change trasmit throw function parameters.
 
+Q: what is difference between *iter()* and *helperAcc* functions? 

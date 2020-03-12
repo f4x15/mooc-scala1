@@ -39,9 +39,6 @@ class Nil[T] extends List[T] {
   def tail: Nothing = throw new NoSuchFieldException("Nil.tail")
 }
 
-
-
-
 object Main {
   // My variant
   def nth[T](n: Int, l: List[T]):T = {

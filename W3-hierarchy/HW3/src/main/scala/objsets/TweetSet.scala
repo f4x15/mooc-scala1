@@ -2,6 +2,7 @@ package objsets
 
 import TweetReader._
 
+import scala.annotation.tailrec
 import scala.runtime.Nothing$
 
 /**
@@ -70,10 +71,8 @@ abstract class TweetSet extends TweetSetInterface {
    * have the highest retweet count.
    *
    * Hint: the method `remove` on TweetSet will be very useful.
-   * Question: Should we implment this method here, or should it remain abstract
-   * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList
 
   /**
    * The following methods are already implemented
@@ -130,6 +129,15 @@ class Empty extends TweetSet {
    * Helper method for `mostRetweeted`
    */
   def mostRetweetedAcc(elem: Tweet): Tweet = elem
+
+  /**
+   * Returns a list containing all tweets of this set, sorted by retweet count
+   * in descending order. In other words, the head of the resulting list should
+   * have the highest retweet count.
+   *
+   * Hint: the method `remove` on TweetSet will be very useful.
+   */
+  def descendingByRetweet: TweetList = Nil
 
   /**
    * The following methods are already implemented
@@ -203,6 +211,32 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
       if (elem.retweets > max.retweets) elem else max))
   }
 
+  /**
+   * Returns a list containing all tweets of this set, sorted by retweet count
+   * in descending order. In other words, the head of the resulting list should
+   * have the highest retweet count.
+   *
+   * Hint: the method `remove` on TweetSet will be very useful.
+   */
+  def descendingByRetweet2: TweetList = {
+    // what we change what we pass as params
+    @tailrec
+    def iter(list: TweetList, set: TweetSet): TweetList = {
+      // TODO: how test empty set or not???   // how is it more sutable??
+      if (set.isInstanceOf[NonEmpty]) {   // how do more accurate
+      val tweet = set.mostRetweeted
+       // list.tail. - how add in reverside order???
+      iter(new Cons(tweet, list), set.remove(tweet))}
+      else list
+    }
+
+    iter(Nil, this)
+  }
+
+  def descendingByRetweet: TweetList = {
+    val most = mostRetweeted
+     new Cons(most, remove(most).descendingByRetweet)
+}
   /**
    * The following methods are already implemented
    */
@@ -326,8 +360,11 @@ object Main extends App {
   */
 
   // mostRetweeted logic
+
   new TestSets {
-    println(set24.mostRetweeted)
+   // println(set2.foreach(x => x.toString))
+    val retweet = set24.descendingByRetweet
+    println(retweet.foreach( x => println(x)))
 
   }
 
