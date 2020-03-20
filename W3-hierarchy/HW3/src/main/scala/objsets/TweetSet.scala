@@ -211,6 +211,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
       if (elem.retweets > max.retweets) elem else max))
   }
 
+  /*
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
    * in descending order. In other words, the head of the resulting list should
@@ -233,6 +234,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
     iter(Nil, this)
   }
+  */
 
   def descendingByRetweet: TweetList = {
     val most = mostRetweeted
