@@ -223,10 +223,11 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     @tailrec
     def iter(list: TweetList, set: TweetSet): TweetList = {
       // TODO: how test empty set or not???   // how is it more sutable??
-      if (set.isInstanceOf[NonEmpty]) {   // how do more accurate
-      val tweet = set.mostRetweeted
-       // list.tail. - how add in reverside order???
-      iter(new Cons(tweet, list), set.remove(tweet))}
+      if (set.isInstanceOf[NonEmpty]) { // how do more accurate
+        val tweet = set.mostRetweeted
+        // list.tail. - how add in reverside order???
+        iter(new Cons(tweet, list), set.remove(tweet))
+      }
       else list
     }
 
@@ -235,8 +236,9 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
 
   def descendingByRetweet: TweetList = {
     val most = mostRetweeted
-     new Cons(most, remove(most).descendingByRetweet)
-}
+    new Cons(most, remove(most).descendingByRetweet)
+  }
+
   /**
    * The following methods are already implemented
    */
@@ -297,8 +299,13 @@ object GoogleVsApple {
   val google = List("android", "Android", "galaxy", "Galaxy", "nexus", "Nexus")
   val apple = List("ios", "iOS", "iphone", "iPhone", "ipad", "iPad")
 
-  lazy val googleTweets: TweetSet = ???
-  lazy val appleTweets: TweetSet = ???
+  lazy val googleTweets: TweetSet = TweetReader.allTweets.filter(tweet => {
+    google.exists(keyword => tweet.text.contains(keyword))
+  })
+
+  lazy val appleTweets: TweetSet = TweetReader.allTweets.filter(tweet => {
+    apple.exists(keyword => tweet.text.contains(keyword))
+  })
 
   /**
    * A list of all tweets mentioning a keyword from either apple or google,
@@ -361,13 +368,18 @@ object Main extends App {
 
   // mostRetweeted logic
 
+  /*
   new TestSets {
    // println(set2.foreach(x => x.toString))
     val retweet = set24.descendingByRetweet
     println(retweet.foreach( x => println(x)))
 
   }
+   */
 
   // Print the trending tweets
+
+  println(GoogleVsApple.appleTweets)
+
   //GoogleVsApple.trending foreach println
 }
